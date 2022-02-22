@@ -1,0 +1,23 @@
+@import url(reset.css);
+
+.header {
+  height:60px;
+  margin: auto;
+  width:100%;
+  background-color:blue;
+}
+
+.cards {
+  font-family: 'Merriweather', serif;
+  border-radius: 8px;
+  background-color:rgb(179, 179, 179);
+  border: none;
+  color: white;
+  padding: 7px 7px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}

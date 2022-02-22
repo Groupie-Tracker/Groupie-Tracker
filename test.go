@@ -22,13 +22,17 @@ type API []struct {
 	Relations    string   `json:"relations"`
 }
 type TemplateData struct {
-	Test string
+	Name string
 	Img  string
+	Glbl string
+	Id   int
 }
 
 var templates = template.Must(template.ParseFiles("HTML/hpage.html"))
+var templates2 = template.Must(template.ParseFiles("HTML/artist.html"))
+var VarApi TemplateData
 
-func home(w http.ResponseWriter, r *http.Request) {
+func artist(w http.ResponseWriter, r *http.Request) {
 
 	Api, err := http.Get("https://groupietrackers.herokuapp.com/api/artists")
 
@@ -43,21 +47,43 @@ func home(w http.ResponseWriter, r *http.Request) {
 	}
 	var ApiObject API
 	json.Unmarshal(ApiData, &ApiObject)
+
 	for i := 0; i < len(ApiObject); i++ {
-		fmt.Println(ApiObject[i].Name)
-		fmt.Println(ApiObject[i].Image)
-	}
-	for i := 0; i < len(ApiObject); i++ {
-		VarApi := Temp{
-			Test: ApiObject[i].Name,
+		VarApi = TemplateData{
+			Name: ApiObject[i].Name,
 			Img:  ApiObject[i].Image,
+			Id:   ApiObject[i].ID,
 		}
 		templates.Execute(w, VarApi)
 	}
+
+}
+
+func home(w http.ResponseWriter, r *http.Request) {
+
+	Api, err := http.Get("https://groupietrackers.herokuapp.com/api/artists")
+
+	if err != nil {
+		fmt.Print(err.Error())
+		os.Exit(1)
+	}
+
+	ApiDataArtist, err := ioutil.ReadAll(Api.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	var ApiObject API
+	json.Unmarshal(ApiDataArtist, &ApiObject)
+
+	templates2.Execute(w, err)
 }
 
 func main() {
+	fs := http.FileServer(http.Dir("./css"))
+	http.Handle("/css/", http.StripPrefix("/css/", fs))
+
 	http.HandleFunc("/", home)
+	http.HandleFunc("/artist", artist)
 
 	log.Fatal(http.ListenAndServe(":55", nil))
 }

@@ -4,14 +4,22 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/card.css">
     <title>Document</title>
 </head>
 <body>
-        <div>
-            {{.Test}}
-        </div>
-        <div>
-            <img src="{{.Img}}">
-        </div>
+        <a class="cards" href="artist">
+            <form method="POST" action="/artist">
+                <input name="id" type="hidden" value="{{.Id}}">
+                <button class="button" type="submit">
+                    <div>
+                        <img src="{{.Img}}">
+                    </div>
+                    <div>
+                        {{.Name}}
+                    </div>
+                </button>
+            </form>
+        </a>
 </body>
 </html>
