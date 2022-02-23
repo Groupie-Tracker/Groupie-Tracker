@@ -8,18 +8,20 @@
     <title>Document</title>
 </head>
 <body>
-        <a class="cards" href="artist">
-            <form method="POST" action="/artist/{{.Id}}">
-                <input name="id" type="hidden" value="{{.Id}}">
+        {{range .Artists}}
+        <a class="cards">
+            <form method="POST" action="/artist">
+                <input name="Oui" type="hidden" value="{{.ID}}">
                 <button class="button" type="submit">
                     <div>
-                        <img src="{{.Img}}">
+                        <img src="{{.Image}}">
                     </div>
                     <div>
-                        {{.Name}}
+                        sdfsdfsdf
                     </div>
                 </button>
             </form>
         </a>
+        {{end}}
 </body>
 </html>

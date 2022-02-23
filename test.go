@@ -11,7 +11,7 @@ import (
 	"text/template"
 )
 
-type API []struct {
+type API struct {
 	ID           int      `json:"id"`
 	Image        string   `json:"image"`
 	Name         string   `json:"name"`
@@ -25,18 +25,22 @@ type API []struct {
 type TemplateData struct {
 	Name string
 	Img  string
-	Glbl string
 	Id   int
+}
+
+type Artists1 struct {
+	Artists []API
 }
 
 var templates = template.Must(template.ParseFiles("HTML/hpage.html"))
 var templates2 = template.Must(template.ParseFiles("HTML/artist.html"))
 var templates3 = template.Must(template.ParseFiles("HTML/truc.html"))
 var VarApi TemplateData
-var ApiObject API
+var VarArtists Artists1
+var ApiObject []API
 var data string
 var Id_data string
-var path string
+var test string
 
 func artist(w http.ResponseWriter, r *http.Request) {
 
@@ -54,14 +58,10 @@ func artist(w http.ResponseWriter, r *http.Request) {
 
 	json.Unmarshal(ApiData, &ApiObject)
 
-	for i := 0; i < len(ApiObject); i++ {
-		VarApi = TemplateData{
-			Name: ApiObject[i].Name,
-			Img:  ApiObject[i].Image,
-			Id:   ApiObject[i].ID,
-		}
-		templates.Execute(w, VarApi)
+	VarArtists = Artists1{
+		Artists: ApiObject,
 	}
+	templates.Execute(w, VarArtists)
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
@@ -80,15 +80,19 @@ func home(w http.ResponseWriter, r *http.Request) {
 	var ApiObject API
 	json.Unmarshal(ApiDataArtist, &ApiObject)
 
-	path = r.URL.Path
+	test := r.FormValue("Oui")
+	fmt.Println("r.formvalue :", test)
 
-	if path != "/favicon.ico" {
-		Id_data = path
-	}
-	Id_data = convert(Id_data)
-	fmt.Println("iddata avant", Id_data)
+	// // test = test.Base(r.URL.test)
+	// test := r.URL.Path
+	// fmt.Println("le test   ", path.Base(r.URL.Path), "test ", test)
+
+	// if test != "favicon.ico" {
+	// 	Id_data = test
+	// }
+	// fmt.Println("iddata avant", Id_data)
 	templates2.Execute(w, err)
-	fmt.Println(Id_data)
+	// fmt.Println(Id_data)
 }
 
 func details(w http.ResponseWriter, r *http.Request) {
@@ -102,20 +106,13 @@ func details(w http.ResponseWriter, r *http.Request) {
 	templates3.Execute(w, VarApi)
 }
 
-func convert(input string) string {
-	i := []rune(input)
-	a := len(i) - 1
-	b := string(i[a])
-	return b
-}
-
 func main() {
 	fs := http.FileServer(http.Dir("./css"))
 	http.Handle("/css/", http.StripPrefix("/css/", fs))
 
 	http.HandleFunc("/", home)
 	http.HandleFunc("/artist", artist)
-	http.HandleFunc("/artist/6", details)
+	http.HandleFunc("/artist/", details)
 
 	log.Fatal(http.ListenAndServe(":55", nil))
 }
