@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"text/template"
 )
 
@@ -30,7 +31,12 @@ type TemplateData struct {
 
 var templates = template.Must(template.ParseFiles("HTML/hpage.html"))
 var templates2 = template.Must(template.ParseFiles("HTML/artist.html"))
+var templates3 = template.Must(template.ParseFiles("HTML/truc.html"))
 var VarApi TemplateData
+var ApiObject API
+var data string
+var Id_data string
+var path string
 
 func artist(w http.ResponseWriter, r *http.Request) {
 
@@ -45,7 +51,7 @@ func artist(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	var ApiObject API
+
 	json.Unmarshal(ApiData, &ApiObject)
 
 	for i := 0; i < len(ApiObject); i++ {
@@ -56,7 +62,6 @@ func artist(w http.ResponseWriter, r *http.Request) {
 		}
 		templates.Execute(w, VarApi)
 	}
-
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
@@ -75,7 +80,33 @@ func home(w http.ResponseWriter, r *http.Request) {
 	var ApiObject API
 	json.Unmarshal(ApiDataArtist, &ApiObject)
 
+	path = r.URL.Path
+
+	if path != "/favicon.ico" {
+		Id_data = path
+	}
+	Id_data = convert(Id_data)
+	fmt.Println("iddata avant", Id_data)
 	templates2.Execute(w, err)
+	fmt.Println(Id_data)
+}
+
+func details(w http.ResponseWriter, r *http.Request) {
+
+	temporaire, _ := strconv.Atoi(Id_data)
+	fmt.Println("azeaze ", temporaire)
+	VarApi = TemplateData{
+		Name: ApiObject[temporaire].Name,
+	}
+
+	templates3.Execute(w, VarApi)
+}
+
+func convert(input string) string {
+	i := []rune(input)
+	a := len(i) - 1
+	b := string(i[a])
+	return b
 }
 
 func main() {
@@ -84,6 +115,7 @@ func main() {
 
 	http.HandleFunc("/", home)
 	http.HandleFunc("/artist", artist)
+	http.HandleFunc("/artist/6", details)
 
 	log.Fatal(http.ListenAndServe(":55", nil))
 }
