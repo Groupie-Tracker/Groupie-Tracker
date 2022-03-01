@@ -10,14 +10,14 @@
 <body>
         {{range .Artists}}
         <a class="cards">
-            <form method="POST" action="/artist">
+            <form method="POST" action="/artist/{{.ID}}">
                 <input name="Oui" type="hidden" value="{{.ID}}">
                 <button class="button" type="submit">
                     <div>
                         <img src="{{.Image}}">
                     </div>
                     <div>
-                        sdfsdfsdf
+                        {{.Name}}
                     </div>
                 </button>
             </form>

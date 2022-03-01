@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path"
 	"strconv"
 	"text/template"
 )
@@ -22,25 +23,31 @@ type API struct {
 	ConcertDates string   `json:"concertDates"`
 	Relations    string   `json:"relations"`
 }
-type TemplateData struct {
-	Name string
-	Img  string
-	Id   int
-}
 
 type Artists1 struct {
 	Artists []API
+	PathID  string
+}
+
+type DescritpionPage struct {
+	ID           int
+	Image        string
+	Name         string
+	Members      []string
+	CreationDate int
+	FirstAlbum   string
+	Locations    string
+	ConcertDates string
+	Relations    string
 }
 
 var templates = template.Must(template.ParseFiles("HTML/hpage.html"))
 var templates2 = template.Must(template.ParseFiles("HTML/artist.html"))
 var templates3 = template.Must(template.ParseFiles("HTML/truc.html"))
-var VarApi TemplateData
-var VarArtists Artists1
 var ApiObject []API
 var data string
 var Id_data string
-var test string
+var test DescritpionPage
 
 func artist(w http.ResponseWriter, r *http.Request) {
 
@@ -58,7 +65,7 @@ func artist(w http.ResponseWriter, r *http.Request) {
 
 	json.Unmarshal(ApiData, &ApiObject)
 
-	VarArtists = Artists1{
+	VarArtists := Artists1{
 		Artists: ApiObject,
 	}
 	templates.Execute(w, VarArtists)
@@ -80,30 +87,25 @@ func home(w http.ResponseWriter, r *http.Request) {
 	var ApiObject API
 	json.Unmarshal(ApiDataArtist, &ApiObject)
 
-	test := r.FormValue("Oui")
-	fmt.Println("r.formvalue :", test)
-
-	// // test = test.Base(r.URL.test)
-	// test := r.URL.Path
-	// fmt.Println("le test   ", path.Base(r.URL.Path), "test ", test)
-
-	// if test != "favicon.ico" {
-	// 	Id_data = test
-	// }
-	// fmt.Println("iddata avant", Id_data)
 	templates2.Execute(w, err)
-	// fmt.Println(Id_data)
 }
 
 func details(w http.ResponseWriter, r *http.Request) {
-
-	temporaire, _ := strconv.Atoi(Id_data)
-	fmt.Println("azeaze ", temporaire)
-	VarApi = TemplateData{
-		Name: ApiObject[temporaire].Name,
+	pathID := r.URL.Path
+	pathID = path.Base(pathID)
+	pathIDint, _ := strconv.Atoi(pathID)
+	VarArtists := DescritpionPage{
+		ID:           ApiObject[pathIDint-1].ID,
+		Image:        ApiObject[pathIDint-1].Image,
+		Members:      ApiObject[pathIDint-1].Members,
+		CreationDate: ApiObject[pathIDint-1].CreationDate,
+		FirstAlbum:   ApiObject[pathIDint-1].FirstAlbum,
+		Locations:    ApiObject[pathIDint-1].Locations,
+		ConcertDates: ApiObject[pathIDint-1].ConcertDates,
+		Relations:    ApiObject[pathIDint-1].Relations,
 	}
 
-	templates3.Execute(w, VarApi)
+	templates3.Execute(w, VarArtists)
 }
 
 func main() {
