@@ -23,6 +23,21 @@ type API struct {
 	ConcertDates string   `json:"concertDates"`
 	Relations    string   `json:"relations"`
 }
+type relation struct {
+	ID             int            `json:"id"`
+	DatesLocations DatesLocations `json:"datesLocations"`
+}
+
+type DatesLocations struct {
+	DunedinNewZealand []string `json:"dunedin-new_zealand"`
+	GeorgiaUsa        []string `json:"georgia-usa"`
+	LosAngelesUsa     []string `json:"los_angeles-usa"`
+	NagoyaJapan       []string `json:"nagoya-japan"`
+	NorthCarolinaUsa  []string `json:"north_carolina-usa"`
+	OsakaJapan        []string `json:"osaka-japan"`
+	PenroseNewZealand []string `json:"penrose-new_zealand"`
+	SaitamaJapan      []string `json:"saitama-japan"`
+}
 
 type Artists1 struct {
 	Artists []API
@@ -91,6 +106,21 @@ func home(w http.ResponseWriter, r *http.Request) {
 }
 
 func details(w http.ResponseWriter, r *http.Request) {
+
+	Api, err := http.Get("https://groupietrackers.herokuapp.com/api/location")
+
+	if err != nil {
+		fmt.Print(err.Error())
+		os.Exit(1)
+	}
+
+	ApiData, err := ioutil.ReadAll(Api.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	json.Unmarshal(ApiData, &ApiObject)
+
 	pathID := r.URL.Path
 	pathID = path.Base(pathID)
 	pathIDint, _ := strconv.Atoi(pathID)
