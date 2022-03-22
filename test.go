@@ -23,25 +23,13 @@ type API struct {
 	ConcertDates string   `json:"concertDates"`
 	Relations    string   `json:"relations"`
 }
-type relation struct {
-	ID             int            `json:"id"`
-	DatesLocations DatesLocations `json:"datesLocations"`
-}
-
-type DatesLocations struct {
-	DunedinNewZealand []string `json:"dunedin-new_zealand"`
-	GeorgiaUsa        []string `json:"georgia-usa"`
-	LosAngelesUsa     []string `json:"los_angeles-usa"`
-	NagoyaJapan       []string `json:"nagoya-japan"`
-	NorthCarolinaUsa  []string `json:"north_carolina-usa"`
-	OsakaJapan        []string `json:"osaka-japan"`
-	PenroseNewZealand []string `json:"penrose-new_zealand"`
-	SaitamaJapan      []string `json:"saitama-japan"`
+type Relation struct {
+	ID             int                 `json:"id"`
+	DatesLocations map[string][]string `json:"DatesLocations"`
 }
 
 type Artists1 struct {
 	Artists []API
-	PathID  string
 }
 
 type DescritpionPage struct {
@@ -62,7 +50,6 @@ var templates3 = template.Must(template.ParseFiles("HTML/truc.html"))
 var ApiObject []API
 var data string
 var Id_data string
-var test DescritpionPage
 
 func artist(w http.ResponseWriter, r *http.Request) {
 
@@ -90,6 +77,8 @@ func home(w http.ResponseWriter, r *http.Request) {
 
 	Api, err := http.Get("https://groupietrackers.herokuapp.com/api/artists")
 
+	var ApiObject API
+
 	if err != nil {
 		fmt.Print(err.Error())
 		os.Exit(1)
@@ -99,7 +88,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	var ApiObject API
+
 	json.Unmarshal(ApiDataArtist, &ApiObject)
 
 	templates2.Execute(w, err)
@@ -107,23 +96,11 @@ func home(w http.ResponseWriter, r *http.Request) {
 
 func details(w http.ResponseWriter, r *http.Request) {
 
-	Api, err := http.Get("https://groupietrackers.herokuapp.com/api/location")
-
-	if err != nil {
-		fmt.Print(err.Error())
-		os.Exit(1)
-	}
-
-	ApiData, err := ioutil.ReadAll(Api.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	json.Unmarshal(ApiData, &ApiObject)
-
 	pathID := r.URL.Path
 	pathID = path.Base(pathID)
 	pathIDint, _ := strconv.Atoi(pathID)
+	var LocationsObject Relation
+
 	VarArtists := DescritpionPage{
 		ID:           ApiObject[pathIDint-1].ID,
 		Image:        ApiObject[pathIDint-1].Image,
@@ -135,7 +112,26 @@ func details(w http.ResponseWriter, r *http.Request) {
 		Relations:    ApiObject[pathIDint-1].Relations,
 	}
 
-	templates3.Execute(w, VarArtists)
+	Oui, err := http.Get(VarArtists.Relations)
+
+	if err != nil {
+		fmt.Print(err.Error())
+		os.Exit(1)
+	}
+
+	OuiData, err := ioutil.ReadAll(Oui.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	json.Unmarshal(OuiData, &LocationsObject)
+
+	MapInt := map[string]interface{}{
+		"VarArtists": VarArtists,
+		"Relation":   LocationsObject,
+	}
+
+	templates3.Execute(w, MapInt)
 }
 
 func main() {

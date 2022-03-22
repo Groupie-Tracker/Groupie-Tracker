@@ -8,8 +8,21 @@
 </head>
 <body>
     <div>
-        {{.FirstAlbum}}
-        
+       {{.VarArtists.FirstAlbum}}
+        <div>
+            {{range $key, $value := .Relation.DatesLocations}}
+                <div>
+                    {{$key}}
+                </div>
+                <div>
+                    {{range $value}}
+                        <div>
+                            {{.}}
+                        </div>
+                    {{end}}
+                </div>
+            {{end}}
+        </div>
     </div>
 </body>
 </html>
