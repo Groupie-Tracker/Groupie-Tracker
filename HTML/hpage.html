@@ -8,20 +8,41 @@
     <title>Document</title>
 </head>
 <body>
-        {{range .Artists}}
-        <a class="cards">
-            <form method="POST" action="/artist/{{.ID}}">
-                <input name="Oui" type="hidden" value="{{.ID}}">
-                <button class="button" type="submit">
-                    <div>
-                        <img src="{{.Image}}">
-                    </div>
-                    <div>
-                        {{.Name}}
-                    </div>
-                </button>
-            </form>
-        </a>
+    <div>
+        <form method="post" action="/artist">
+            <input name="SearchBar" type="text">
+        </form>
+    </div>
+    <div>
+        {{if not .SearchBar2.SearchBar}}
+            {{range .VarArtists.Artists}}
+            <a class="cards">
+                <form method="POST" action="/artist/{{.ID}}">
+                    <input name="Oui" type="hidden" value="{{.ID}}">
+                    <button class="button" type="submit">
+                        <div>
+                            <img src="{{.Image}}">
+                        </div>
+                        <div>
+                            {{.Name}}
+                        </div>
+                    </button>
+                </form>
+            </a>
+            {{end}}
+        {{else}}
+                <form method="POST" action="/artist/{{.SearchBar2.Artist.ID}}">
+                    <input name="Oui" type="hidden" value="{{.SearchBar2.Artist.ID}}">
+                    <button class="button" type="submit">
+                        <div>
+                            <img src="{{.SearchBar2.Artist.Image}}">
+                        </div>
+                        <div>
+                            {{.SearchBar2.Artist.Name}}
+                        </div>
+                    </button>
+                </form>
         {{end}}
+    </div>
 </body>
 </html>

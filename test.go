@@ -9,6 +9,7 @@ import (
 	"os"
 	"path"
 	"strconv"
+	"strings"
 	"text/template"
 )
 
@@ -44,6 +45,11 @@ type DescritpionPage struct {
 	Relations    string
 }
 
+type SearchBar struct {
+	Artist    API
+	SearchBar bool
+}
+
 var templates = template.Must(template.ParseFiles("HTML/hpage.html"))
 var templates2 = template.Must(template.ParseFiles("HTML/artist.html"))
 var templates3 = template.Must(template.ParseFiles("HTML/truc.html"))
@@ -67,10 +73,30 @@ func artist(w http.ResponseWriter, r *http.Request) {
 
 	json.Unmarshal(ApiData, &ApiObject)
 
+	searchBar := r.FormValue("SearchBar")
+	var Test SearchBar
+
+	for i := 0; i < len(ApiObject); i++ {
+		name := strings.ToUpper(ApiObject[i].Name)
+		searchBar = strings.ToUpper(searchBar)
+		if name == searchBar {
+			Test = SearchBar{
+				Artist:    ApiObject[i],
+				SearchBar: true,
+			}
+		}
+
+	}
+
 	VarArtists := Artists1{
 		Artists: ApiObject,
 	}
-	templates.Execute(w, VarArtists)
+
+	MapInt := map[string]interface{}{
+		"VarArtists": VarArtists,
+		"SearchBar2": Test,
+	}
+	templates.Execute(w, MapInt)
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
