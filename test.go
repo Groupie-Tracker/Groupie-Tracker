@@ -78,8 +78,10 @@ func artist(w http.ResponseWriter, r *http.Request) {
 
 	for i := 0; i < len(ApiObject); i++ {
 		name := strings.ToUpper(ApiObject[i].Name)
+		album := strings.ToUpper(ApiObject[i].FirstAlbum)
+
 		searchBar = strings.ToUpper(searchBar)
-		if name == searchBar {
+		if name == searchBar || album == searchBar {
 			Test = SearchBar{
 				Artist:    ApiObject[i],
 				SearchBar: true,

@@ -10,7 +10,17 @@
 <body>
     <div>
         <form method="post" action="/artist">
-            <input name="SearchBar" type="text">
+            <input name="SearchBar" type="search"  list="Bar">
+            <datalist id="Bar">
+                {{range .VarArtists.Artists}}
+                <option value="{{.Name}}">
+                    {{range .Members}} 
+                <option value="{{.}}">
+                    {{end}}
+                <option value="{{.FirstAlbum}}">
+                <option value="{{.CreationDate}}">
+                {{end}}
+              </datalist>
         </form>
     </div>
     <div>
