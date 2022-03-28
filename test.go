@@ -50,9 +50,9 @@ type SearchBar struct {
 	SearchBar bool
 }
 
-var templates = template.Must(template.ParseFiles("HTML/hpage.html"))
-var templates2 = template.Must(template.ParseFiles("HTML/artist.html"))
-var templates3 = template.Must(template.ParseFiles("HTML/truc.html"))
+var templates = template.Must(template.ParseFiles("HTML/artists.html"))
+var templates2 = template.Must(template.ParseFiles("HTML/hpage.html"))
+var templates3 = template.Must(template.ParseFiles("HTML/details.html"))
 var ApiObject []API
 var data string
 var Id_data string
@@ -79,15 +79,19 @@ func artist(w http.ResponseWriter, r *http.Request) {
 	for i := 0; i < len(ApiObject); i++ {
 		name := strings.ToUpper(ApiObject[i].Name)
 		album := strings.ToUpper(ApiObject[i].FirstAlbum)
+		creationDate := ApiObject[i].CreationDate
+		creationDate2 := strconv.Itoa(creationDate)
+		for z := 0; z < len(ApiObject[i].Members); z++ {
+			members := strings.ToUpper(ApiObject[i].Members[z])
 
-		searchBar = strings.ToUpper(searchBar)
-		if name == searchBar || album == searchBar {
-			Test = SearchBar{
-				Artist:    ApiObject[i],
-				SearchBar: true,
+			searchBar = strings.ToUpper(searchBar)
+			if name == searchBar || album == searchBar || creationDate2 == searchBar || members == searchBar {
+				Test = SearchBar{
+					Artist:    ApiObject[i],
+					SearchBar: true,
+				}
 			}
 		}
-
 	}
 
 	VarArtists := Artists1{

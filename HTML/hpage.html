@@ -3,56 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/card.css">
-    <title>Document</title>
+    <title>artist</title>
 </head>
 <body>
-    <div>
-        <form method="post" action="/artist">
-            <input name="SearchBar" type="search"  list="Bar">
-            <datalist id="Bar">
-                {{range .VarArtists.Artists}}
-                <option value="{{.Name}}">
-                    {{range .Members}} 
-                <option value="{{.}}">
-                    {{end}}
-                <option value="{{.FirstAlbum}}">
-                <option value="{{.CreationDate}}">
-                {{end}}
-              </datalist>
-        </form>
-    </div>
-    <div>
-        {{if not .SearchBar2.SearchBar}}
-            {{range .VarArtists.Artists}}
-            <a class="cards">
-                <form method="POST" action="/artist/{{.ID}}">
-                    <input name="Oui" type="hidden" value="{{.ID}}">
-                    <button class="button" type="submit">
-                        <div>
-                            <img src="{{.Image}}">
-                        </div>
-                        <div>
-                            {{.Name}}
-                        </div>
-                    </button>
-                </form>
-            </a>
-            {{end}}
-        {{else}}
-                <form method="POST" action="/artist/{{.SearchBar2.Artist.ID}}">
-                    <input name="Oui" type="hidden" value="{{.SearchBar2.Artist.ID}}">
-                    <button class="button" type="submit">
-                        <div>
-                            <img src="{{.SearchBar2.Artist.Image}}">
-                        </div>
-                        <div>
-                            {{.SearchBar2.Artist.Name}}
-                        </div>
-                    </button>
-                </form>
-        {{end}}
-    </div>
+        <div>
+            <a class="button" href="artist">pouet</a>
+        </div>
 </body>
 </html>
