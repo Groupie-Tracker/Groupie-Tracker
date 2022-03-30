@@ -74,7 +74,9 @@ func artist(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal(ApiData, &ApiObject)
 
 	searchBar := r.FormValue("SearchBar")
-	var Test SearchBar
+	pouet := r.FormValue("filter")
+	var SearchBar3 SearchBar
+	fmt.Println(pouet)
 
 	for i := 0; i < len(ApiObject); i++ {
 		name := strings.ToUpper(ApiObject[i].Name)
@@ -86,7 +88,7 @@ func artist(w http.ResponseWriter, r *http.Request) {
 
 			searchBar = strings.ToUpper(searchBar)
 			if name == searchBar || album == searchBar || creationDate2 == searchBar || members == searchBar {
-				Test = SearchBar{
+				SearchBar3 = SearchBar{
 					Artist:    ApiObject[i],
 					SearchBar: true,
 				}
@@ -100,7 +102,7 @@ func artist(w http.ResponseWriter, r *http.Request) {
 
 	MapInt := map[string]interface{}{
 		"VarArtists": VarArtists,
-		"SearchBar2": Test,
+		"SearchBar2": SearchBar3,
 	}
 	templates.Execute(w, MapInt)
 }

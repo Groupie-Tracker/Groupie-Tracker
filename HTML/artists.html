@@ -26,19 +26,27 @@
     <div>
         {{if not .SearchBar2.SearchBar}}
             {{range .VarArtists.Artists}}
-            <a class="cards">
+            <div class="cards">
                 <form method="POST" action="/artist/{{.ID}}">
                     <input name="Oui" type="hidden" value="{{.ID}}">
                     <button class="button" type="submit">
+                        <div>
                         <div>
                             <img src="{{.Image}}">
                         </div>
                         <div>
                             {{.Name}}
                         </div>
+                        <div class="flip-card">
+                            {{range .Members}}
+                                <div>
+                                    {{.}}
+                                </div>
+                            {{end}}
+                        </div>
                     </button>
                 </form>
-            </a>
+            </div>
             {{end}}
         {{else}}
                 <form method="POST" action="/artist/{{.SearchBar2.Artist.ID}}">

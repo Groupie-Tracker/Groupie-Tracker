@@ -1,11 +1,5 @@
 @import url(reset.css);
 
-.header {
-  height:60px;
-  margin: auto;
-  width:100%;
-  background-color:blue;
-}
 
 .cards {
   font-family: 'Merriweather', serif;
