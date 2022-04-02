@@ -8,16 +8,21 @@
 </head>
 <body>
     <div>
-       Premier album : {{.VarArtists.FirstAlbum}}
+        <img src=" {{.VarArtists.Image}}" alt="">
+    </div>
+    <div>
+        <p>First Album</p>
+       {{.VarArtists.FirstAlbum}}
         <div>
+            <p>Concert</p>
             {{range $key, $value := .Relation.DatesLocations}}
-                <div class="lieu">
-                    Lieu : {{$key}}
+                <div>
+                    {{$key}}
                 </div>
-                <div class="dates">
+                <div>
                     {{range $value}}
                         <div>
-                            Dates : {{.}}
+                            {{.}}
                         </div>
                     {{end}}
                 </div>
