@@ -4,29 +4,38 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/details.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hurricane&display=swap" rel="stylesheet">
     <title>Document</title>
 </head>
 <body>
-    <div>
-        <img src=" {{.VarArtists.Image}}" alt="">
-    </div>
-    <div>
-        <p>First Album</p>
-       {{.VarArtists.FirstAlbum}}
-        <div>
-            <p>Concert</p>
-            {{range $key, $value := .Relation.DatesLocations}}
-                <div>
-                    {{$key}}
-                </div>
-                <div>
-                    {{range $value}}
-                        <div>
-                            {{.}}
-                        </div>
-                    {{end}}
-                </div>
-            {{end}}
+    <div class="site">
+        <div class="title">
+            Details de l'artiste :
+        </div>
+        <div class="image">
+            <img class="img" src="{{.VarArtists.Image}}">
+        </div>
+        <div class="info-global">
+            <p class="info-global-title">Creation date :</p>
+        {{.VarArtists.CreationDate}}
+            <div>
+                <p class="info-global-title">Concert :</p>
+                {{range $key, $value := .Relation.DatesLocations}}
+                    <div class="info-global-place">
+                        {{$key}} :
+                    </div>
+                    <div>
+                        {{range $value}}
+                            <div>
+                                {{.}}
+                            </div>
+                        {{end}}
+                    </div>
+                {{end}}
+            </div>
         </div>
     </div>
 </body>

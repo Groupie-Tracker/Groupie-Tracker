@@ -22,7 +22,7 @@
   border: none;
   display: inline-block;
   font-size: 16px;
-  text-align: center;
+  text-align: left;
   text-decoration: none;
   margin: 1%;
 }
@@ -35,15 +35,17 @@
   border: none;
 }
 
-
-
-
-
-.img_loupe {
-  background-color: #22a6b3;
-  color:  #22a6b3;
-  border-radius: 8px;
+.flip-card-back-date {
+  font-size: 15px;
 }
+.flip-card-back-date-tittle {
+  font-size: 20px;
+}
+.flip-card-back-date-members {
+  font-size: 20px;
+}
+
+
 
 
 /* search bar */
@@ -152,7 +154,7 @@
 }
 .flip-card-back-member {
   color: #fff;
-  font-size: 20px;
+  font-size: 15px;
 }
 
 .flip-card-back {

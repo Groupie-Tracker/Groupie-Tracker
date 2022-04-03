@@ -53,7 +53,18 @@
                                                 <div class="flip-card-back-name">
                                                     {{.Name}}
                                                 </div>
+                                                <div class="flip-card-back-date">
+                                                    <div class="flip-card-back-date-tittle">
+                                                        Dates de Creation :
+                                                    </div>
+                                                    <div>
+                                                        {{.CreationDate}}
+                                                    </div>
+                                                </div>
                                                 <div class="flip-card-back-member">
+                                                    <div class="flip-card-back-date-members">
+                                                        Members :
+                                                    </div>
                                                     {{range .Members}}
                                                         <div>
                                                             {{.}}
