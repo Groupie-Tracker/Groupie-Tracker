@@ -2,7 +2,7 @@
 
 .site {
     background-color: #0A192F;
-    height: 100vh;
+    height: 110vh;
     background-size: cover;
 }
 
@@ -20,7 +20,7 @@
     padding-top: 5%;
     border-radius: 8px;
 }
-@media screen and (max-width: 500px) {
+@media screen and (min-width: 500px) {
 
     .img {
         border-radius: 8px;
@@ -29,11 +29,13 @@
         float: left;
     }
 }
-.img {
-    border-radius: 8px;
-    height: 100px;
-    width: 100px;
-    float: left;
+@media screen and (max-width: 500px) {
+    .img {
+        border-radius: 8px;
+        height: 100px;
+        width: 100px;
+        float: left;
+    }
 }
 .info-global {
     color: #fff;
