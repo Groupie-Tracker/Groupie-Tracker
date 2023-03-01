@@ -74,9 +74,9 @@ func artist(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal(ApiData, &ApiObject)
 
 	searchBar := r.FormValue("SearchBar")
-	pouet := r.FormValue("filter")
+	temp := r.FormValue("filter")
 	var SearchBar3 SearchBar
-	fmt.Println(pouet)
+	fmt.Println(temp)
 
 	for i := 0; i < len(ApiObject); i++ {
 		name := strings.ToUpper(ApiObject[i].Name)
@@ -176,5 +176,5 @@ func main() {
 	http.HandleFunc("/artist", artist)
 	http.HandleFunc("/artist/", details)
 
-	log.Fatal(http.ListenAndServe(":55", nil))
+	log.Fatal(http.ListenAndServe(":50", nil))
 }
